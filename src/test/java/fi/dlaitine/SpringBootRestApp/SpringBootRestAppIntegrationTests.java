@@ -59,7 +59,7 @@ public class SpringBootRestAppIntegrationTests {
 		List<TaskResponse> taskResponses = Arrays.asList(taskEntity.getBody());
 		
 		assertEquals(1, taskResponses.size());
-		assertEquals("Create REST service", taskResponses.get(0).getName());		
+		assertEquals("Create REST service", taskResponses.get(0).getName());
 	}
 	
 	@Test
@@ -68,11 +68,13 @@ public class SpringBootRestAppIntegrationTests {
 		
 		assertEquals("Add integration tests", originalTask.getName());
 		assertEquals(false, originalTask.isDone());
+		long id = originalTask.getId();
 		
 		restTemplate.put("/api/tasks/update/Add integration tests", new TaskRequest("Add integration tests", "Add integration tests to REST service", true));
 		TaskResponse updatedTask = restTemplate.getForObject("/api/tasks/findByName/Add integration tests", TaskResponse.class);
 		
 		assertEquals("Add integration tests", updatedTask.getName());
 		assertEquals(true, updatedTask.isDone());
+		assertEquals(id, updatedTask.getId());
 	}
 }
