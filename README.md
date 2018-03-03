@@ -12,4 +12,4 @@ mvn spring-boot:run
 
 REST will be available at http://localhost:8080
 
-Swagger will be available for testing and documentation at http://localhost:8080/swagger-ui.html
+Swagger will be available for testing and documentation at http://localhost:8080/swagger-ui.html#/task45controller
