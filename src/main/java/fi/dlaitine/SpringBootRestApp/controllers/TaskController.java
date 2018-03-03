@@ -34,7 +34,7 @@ public class TaskController {
 		return service.save(task);
 	}
 	
-	@RequestMapping(value = "/update?name={name}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/update/{name}", method = RequestMethod.PUT)
 	public TaskResponse update(@PathVariable String name, @Valid @RequestBody TaskRequest task) throws Exception {
 		return service.update(name, task);
 	}
