@@ -28,6 +28,12 @@ public class TaskService {
 				.collect(Collectors.toList());
 	}
 	
+	public TaskResponse findByName(String name) {
+		Task task = findTask(name);
+		
+		return new TaskResponse(task.getId(), task.getName(), task.getDescription(), task.isDone(), task.getCreated());
+	}
+	
 	@Transactional
 	public TaskResponse save(TaskRequest task) {
 		Task newTask = new Task(task.getName(), task.getDescription(), task.isDone());

@@ -29,6 +29,11 @@ public class TaskController {
 		return service.findAll();		
 	}
 	
+	@RequestMapping(value = "findByName/{name}", method = RequestMethod.GET)
+	public TaskResponse findByName(@PathVariable String name) {
+		return service.findByName(name);
+	}
+	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public TaskResponse save(@Valid @RequestBody TaskRequest task) {
 		return service.save(task);
