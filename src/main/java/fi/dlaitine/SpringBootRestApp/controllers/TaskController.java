@@ -35,13 +35,12 @@ public class TaskController {
 	}
 	
 	@RequestMapping(value = "/update/{name}", method = RequestMethod.PUT)
-	public TaskResponse update(@PathVariable String name, @Valid @RequestBody TaskRequest task) throws Exception {
+	public TaskResponse update(@PathVariable String name, @Valid @RequestBody TaskRequest task) {
 		return service.update(name, task);
 	}
 	
 	@RequestMapping(value = "/delete/{name}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable String name) throws Exception {
+	public void delete(@PathVariable String name) {
 		service.delete(name);		
 	}
 }
