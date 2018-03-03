@@ -9,11 +9,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fi.dlaitine.SpringBootRestApp.models.exceptions.TaskAlreadyExistsException;
+import fi.dlaitine.SpringBootRestApp.models.exceptions.TaskNotFoundException;
 import fi.dlaitine.SpringBootRestApp.models.Task;
 import fi.dlaitine.SpringBootRestApp.models.TaskRequest;
 import fi.dlaitine.SpringBootRestApp.models.TaskResponse;
-import fi.dlaitine.SpringBootRestApp.models.exceptions.TaskAlreadyExistsException;
-import fi.dlaitine.SpringBootRestApp.models.exceptions.TaskNotFoundException;
 import fi.dlaitine.SpringBootRestApp.repositories.TaskRepository;
 
 @Service
