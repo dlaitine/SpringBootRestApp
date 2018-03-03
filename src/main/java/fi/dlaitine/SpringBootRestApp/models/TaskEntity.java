@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -30,7 +31,7 @@ public class TaskEntity {
 		private boolean done;
 		
 		@Column
-		private LocalDateTime created = LocalDateTime.now();
+		private LocalDateTime created;
 		
 		public TaskEntity() {
 			
@@ -40,6 +41,7 @@ public class TaskEntity {
 			this.name = name;
 			this.description = description;
 			this.done = done;
+			this.created = LocalDateTime.now();
 		}
 
 		public String getName() {

@@ -8,11 +8,7 @@ import javax.validation.constraints.Size;
 public class TaskResponse {
 
 	private long id;
-	
-	@NotNull(message = "Name can't be empty")
-	@Size(min = 4, max = 64, message = "Name length must be between 4 and 64 characters")
 	private String name;
-	
 	private String description;
 	private boolean done;
 	private LocalDateTime created;
