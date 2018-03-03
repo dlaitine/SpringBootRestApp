@@ -58,6 +58,7 @@ public class SpringBootRestAppIntegrationTests {
 		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/findAll", TaskResponse[].class);
 		List<TaskResponse> taskResponses = Arrays.asList(taskEntity.getBody());
 		
+		assertEquals(HttpStatus.OK, taskEntity.getStatusCode());
 		assertEquals(1, taskResponses.size());
 		assertEquals("Create REST service", taskResponses.get(0).getName());
 	}
