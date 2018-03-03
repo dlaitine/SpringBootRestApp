@@ -15,7 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 
 @Entity
-public class TaskEntity {
+public class Task {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,11 +33,11 @@ public class TaskEntity {
 		@Column
 		private LocalDateTime created;
 		
-		public TaskEntity() {
+		public Task() {
 			
 		}
 		
-		public TaskEntity(String name, String description, boolean done) {
+		public Task(String name, String description, boolean done) {
 			this.name = name;
 			this.description = description;
 			this.done = done;
