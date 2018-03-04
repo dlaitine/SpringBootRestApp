@@ -2,9 +2,6 @@ package fi.dlaitine.SpringBootRestApp.models;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class TaskResponse {
 
 	private long id;
