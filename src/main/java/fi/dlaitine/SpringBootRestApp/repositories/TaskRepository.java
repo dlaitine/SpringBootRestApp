@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import fi.dlaitine.SpringBootRestApp.models.Task;
 
 @Repository
-public interface TaskRepository extends CrudRepository<Task, String> {
+public interface TaskRepository extends CrudRepository<Task, Long> {
 	
 	Task findByName(@Param("name") String name);
 	
