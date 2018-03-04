@@ -1,4 +1,4 @@
-Exercise project using Spring Boot Framework to create a simple REST service.
+Exercise project to create a simple CRUD REST service. Uses Spring Boot with H2 database to create, read, update and delete tasks. Includes simple junit integration tests for CRUD operations.
 
 Install dependencies
 <code>
@@ -10,6 +10,4 @@ Run application
 mvn spring-boot:run
 </code>
 
-REST will be available at http://localhost:8080
-
-Swagger will be available for testing and documentation at http://localhost:8080/swagger-ui.html#/task45controller
+Swagger will be available for testing and API documentation at http://localhost:8080/swagger-ui.html#/task45controller
