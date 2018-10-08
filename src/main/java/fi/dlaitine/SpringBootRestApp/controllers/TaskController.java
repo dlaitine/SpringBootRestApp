@@ -29,7 +29,7 @@ public class TaskController {
 		return service.findAll();		
 	}
 	
-	@RequestMapping(value = "findByName/{name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/findByName/{name}", method = RequestMethod.GET)
 	@ApiOperation(value = "Find task", notes = "Retrieves a specific task, identified by name", response = TaskResponse.class)
 	public TaskResponse findByName(@PathVariable String name) {
 		return service.findByName(name);
