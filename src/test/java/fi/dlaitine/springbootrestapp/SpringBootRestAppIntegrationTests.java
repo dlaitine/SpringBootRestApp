@@ -1,4 +1,4 @@
-package fi.dlaitine.SpringBootRestApp;
+package fi.dlaitine.springbootrestapp;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fi.dlaitine.SpringBootRestApp.Application;
-import fi.dlaitine.SpringBootRestApp.models.TaskRequest;
-import fi.dlaitine.SpringBootRestApp.models.TaskResponse;
+import fi.dlaitine.springbootrestapp.Application;
+import fi.dlaitine.springbootrestapp.model.TaskRequest;
+import fi.dlaitine.springbootrestapp.model.TaskResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(

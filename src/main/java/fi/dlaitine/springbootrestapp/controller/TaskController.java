@@ -1,4 +1,4 @@
-package fi.dlaitine.SpringBootRestApp.controllers;
+package fi.dlaitine.springbootrestapp.controller;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import fi.dlaitine.SpringBootRestApp.models.TaskRequest;
-import fi.dlaitine.SpringBootRestApp.models.TaskResponse;
-import fi.dlaitine.SpringBootRestApp.services.TaskService;
+import fi.dlaitine.springbootrestapp.model.TaskRequest;
+import fi.dlaitine.springbootrestapp.model.TaskResponse;
+import fi.dlaitine.springbootrestapp.service.TaskService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController

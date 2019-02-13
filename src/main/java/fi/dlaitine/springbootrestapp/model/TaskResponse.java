@@ -1,4 +1,4 @@
-package fi.dlaitine.SpringBootRestApp.models;
+package fi.dlaitine.springbootrestapp.model;
 
 import java.time.LocalDateTime;
 

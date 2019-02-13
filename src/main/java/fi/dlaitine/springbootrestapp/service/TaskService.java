@@ -1,4 +1,4 @@
-package fi.dlaitine.SpringBootRestApp.services;
+package fi.dlaitine.springbootrestapp.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,12 +9,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fi.dlaitine.SpringBootRestApp.models.exceptions.TaskAlreadyExistsException;
-import fi.dlaitine.SpringBootRestApp.models.exceptions.TaskNotFoundException;
-import fi.dlaitine.SpringBootRestApp.models.Task;
-import fi.dlaitine.SpringBootRestApp.models.TaskRequest;
-import fi.dlaitine.SpringBootRestApp.models.TaskResponse;
-import fi.dlaitine.SpringBootRestApp.repositories.TaskRepository;
+import fi.dlaitine.springbootrestapp.model.Task;
+import fi.dlaitine.springbootrestapp.model.TaskRequest;
+import fi.dlaitine.springbootrestapp.model.TaskResponse;
+import fi.dlaitine.springbootrestapp.model.exception.TaskAlreadyExistsException;
+import fi.dlaitine.springbootrestapp.model.exception.TaskNotFoundException;
+import fi.dlaitine.springbootrestapp.repository.TaskRepository;
 
 @Service
 public class TaskService {

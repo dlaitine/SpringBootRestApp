@@ -1,4 +1,4 @@
-package fi.dlaitine.SpringBootRestApp;
+package fi.dlaitine.springbootrestapp;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
