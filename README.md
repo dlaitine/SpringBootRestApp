@@ -1,4 +1,9 @@
-Simple CRUD REST service excercise project. Uses Spring Boot with H2 database to create, read, update and delete tasks. Includes simple junit integration tests for CRUD operations.
+Simple REST API to manage tasks. Uses Spring Boot with H2 database to create, read, update and delete tasks. Includes simple junit integration tests for CRUD operations.
+
+Prerequisites:
+
+Java 8
+Maven
 
 Install dependencies
 <code>
