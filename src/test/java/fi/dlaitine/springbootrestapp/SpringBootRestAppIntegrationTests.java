@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import fi.dlaitine.springbootrestapp.Application;
 import fi.dlaitine.springbootrestapp.model.TaskRequest;
@@ -34,7 +35,7 @@ public class SpringBootRestAppIntegrationTests {
 	
 	@Test
 	public void findAllTest() {
-		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/findAll", TaskResponse[].class);
+		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/", TaskResponse[].class);
 		List<TaskResponse> taskResponses = Arrays.asList(taskEntity.getBody());
 		
 		assertEquals(2, taskResponses.size());
@@ -43,7 +44,7 @@ public class SpringBootRestAppIntegrationTests {
 	@Test
 	public void postTaskTest() {
 		
-		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity("/api/tasks/save/", new TaskRequest("Test GET", "Create integration test for GET", false), TaskResponse.class);
+		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity("/api/tasks/", new TaskRequest("Test GET", "Create integration test for GET", false), TaskResponse.class);
 		TaskResponse taskResponse = taskEntity.getBody();
 		
 		assertEquals(HttpStatus.OK, taskEntity.getStatusCode());
@@ -54,28 +55,45 @@ public class SpringBootRestAppIntegrationTests {
 	
 	@Test
 	public void deleteTaskTest() {
-		restTemplate.delete("/api/tasks/delete/Add integration tests");
-		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/findAll", TaskResponse[].class);
+		restTemplate.delete("/api/tasks/Add integration tests");
+		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/", TaskResponse[].class);
 		List<TaskResponse> taskResponses = Arrays.asList(taskEntity.getBody());
 		
 		assertEquals(HttpStatus.OK, taskEntity.getStatusCode());
 		assertEquals(1, taskResponses.size());
 		assertEquals("Create REST service", taskResponses.get(0).getName());
 	}
-	
+
 	@Test
 	public void updateTaskTest() {
-		TaskResponse originalTask = restTemplate.getForObject("/api/tasks/findByName/Add integration tests", TaskResponse.class);
+		TaskResponse originalTask = restTemplate.getForObject("/api/tasks/Add integration tests", TaskResponse.class);
 		
 		assertEquals("Add integration tests", originalTask.getName());
 		assertEquals(false, originalTask.isDone());
 		long id = originalTask.getId();
 		
-		restTemplate.put("/api/tasks/update/Add integration tests", new TaskRequest("Add integration tests", "Add integration tests to REST service", true));
-		TaskResponse updatedTask = restTemplate.getForObject("/api/tasks/findByName/Add integration tests", TaskResponse.class);
+		restTemplate.put("/api/tasks/Add integration tests", new TaskRequest("Add integration tests", "Add integration tests to REST service", true));
+		TaskResponse updatedTask = restTemplate.getForObject("/api/tasks/Add integration tests", TaskResponse.class);
 		
 		assertEquals("Add integration tests", updatedTask.getName());
 		assertEquals(true, updatedTask.isDone());
 		assertEquals(id, updatedTask.getId());
+	}
+
+	@Test
+	public void postTaskWithTooShortNameTest() {
+		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity("/api/tasks/", new TaskRequest("S", "Test too short name", false), TaskResponse.class);
+		HttpStatus status = taskResponse.getStatusCode();
+		assertEquals(HttpStatus.BAD_REQUEST, status);
+	}
+
+	@Test
+	public void postTaskWithTooLongNameTest() {
+		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity("/api/tasks/", new TaskRequest(
+				"LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+				"Test too long name",
+				false), TaskResponse.class);
+		HttpStatus status = taskResponse.getStatusCode();
+		assertEquals(HttpStatus.BAD_REQUEST, status);
 	}
 }

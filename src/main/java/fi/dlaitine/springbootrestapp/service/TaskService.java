@@ -9,7 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fi.dlaitine.springbootrestapp.model.Task;
+import fi.dlaitine.springbootrestapp.entity.Task;
 import fi.dlaitine.springbootrestapp.model.TaskRequest;
 import fi.dlaitine.springbootrestapp.model.TaskResponse;
 import fi.dlaitine.springbootrestapp.model.exception.TaskAlreadyExistsException;
@@ -30,7 +30,7 @@ public class TaskService {
 	
 	public TaskResponse findByName(String name) {
 		Task task = findTask(name);
-		
+
 		return new TaskResponse(task.getId(), task.getName(), task.getDescription(), task.isDone(), task.getCreated());
 	}
 	
@@ -49,11 +49,12 @@ public class TaskService {
 	
 	@Transactional
 	public TaskResponse update(String name, TaskRequest newTask) {
+		Task task = findTask(name);
+
 		if(!name.equals(newTask.getName()) && repository.existsByName(newTask.getName())) {
 			throw new TaskAlreadyExistsException(newTask.getName());
 		}
 		
-		Task task = findTask(name);
 		task.setName(newTask.getName());
 		task.setDescription(newTask.getDescription());
 		task.setDone(newTask.isDone());
