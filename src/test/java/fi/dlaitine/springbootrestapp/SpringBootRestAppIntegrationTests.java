@@ -1,12 +1,12 @@
 package fi.dlaitine.springbootrestapp;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,9 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import fi.dlaitine.springbootrestapp.Application;
 import fi.dlaitine.springbootrestapp.model.TaskRequest;
 import fi.dlaitine.springbootrestapp.model.TaskResponse;
 
@@ -30,12 +28,14 @@ import fi.dlaitine.springbootrestapp.model.TaskResponse;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SpringBootRestAppIntegrationTests {
 	
+	private static final String TASKS_URL = "/api/v1/tasks/";
+
 	@Autowired
 	private TestRestTemplate restTemplate;
 	
 	@Test
 	public void findAllTest() {
-		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/", TaskResponse[].class);
+		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity(TASKS_URL, TaskResponse[].class);
 		List<TaskResponse> taskResponses = Arrays.asList(taskEntity.getBody());
 		
 		assertEquals(2, taskResponses.size());
@@ -44,7 +44,7 @@ public class SpringBootRestAppIntegrationTests {
 	@Test
 	public void postTaskTest() {
 		
-		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity("/api/tasks/", new TaskRequest("Test GET", "Create integration test for GET", false), TaskResponse.class);
+		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test GET", "Create integration test for GET", false), TaskResponse.class);
 		TaskResponse taskResponse = taskEntity.getBody();
 		
 		assertEquals(HttpStatus.OK, taskEntity.getStatusCode());
@@ -55,8 +55,8 @@ public class SpringBootRestAppIntegrationTests {
 	
 	@Test
 	public void deleteTaskTest() {
-		restTemplate.delete("/api/tasks/Add integration tests");
-		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity("/api/tasks/", TaskResponse[].class);
+		restTemplate.delete(TASKS_URL + "Add integration tests");
+		ResponseEntity<TaskResponse[]> taskEntity = restTemplate.getForEntity(TASKS_URL, TaskResponse[].class);
 		List<TaskResponse> taskResponses = Arrays.asList(taskEntity.getBody());
 		
 		assertEquals(HttpStatus.OK, taskEntity.getStatusCode());
@@ -66,14 +66,14 @@ public class SpringBootRestAppIntegrationTests {
 
 	@Test
 	public void updateTaskTest() {
-		TaskResponse originalTask = restTemplate.getForObject("/api/tasks/Add integration tests", TaskResponse.class);
+		TaskResponse originalTask = restTemplate.getForObject(TASKS_URL + "Add integration tests", TaskResponse.class);
 		
 		assertEquals("Add integration tests", originalTask.getName());
 		assertEquals(false, originalTask.isDone());
 		long id = originalTask.getId();
 		
-		restTemplate.put("/api/tasks/Add integration tests", new TaskRequest("Add integration tests", "Add integration tests to REST service", true));
-		TaskResponse updatedTask = restTemplate.getForObject("/api/tasks/Add integration tests", TaskResponse.class);
+		restTemplate.put(TASKS_URL + "Add integration tests", new TaskRequest("Add integration tests", "Add integration tests to REST service", true));
+		TaskResponse updatedTask = restTemplate.getForObject(TASKS_URL + "Add integration tests", TaskResponse.class);
 		
 		assertEquals("Add integration tests", updatedTask.getName());
 		assertEquals(true, updatedTask.isDone());
@@ -82,14 +82,14 @@ public class SpringBootRestAppIntegrationTests {
 
 	@Test
 	public void postTaskWithTooShortNameTest() {
-		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity("/api/tasks/", new TaskRequest("S", "Test too short name", false), TaskResponse.class);
+		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity(TASKS_URL, new TaskRequest("S", "Test too short name", false), TaskResponse.class);
 		HttpStatus status = taskResponse.getStatusCode();
 		assertEquals(HttpStatus.BAD_REQUEST, status);
 	}
 
 	@Test
 	public void postTaskWithTooLongNameTest() {
-		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity("/api/tasks/", new TaskRequest(
+		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity(TASKS_URL, new TaskRequest(
 				"LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
 				"Test too long name",
 				false), TaskResponse.class);

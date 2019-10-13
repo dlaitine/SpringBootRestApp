@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,12 +25,15 @@ import fi.dlaitine.springbootrestapp.service.TaskService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
-	
-	@Autowired
+
 	private TaskService service;
-	
+
+	public TaskController(TaskService service) {
+		this.service = service;
+	}
+
 	@GetMapping(value = "/")
 	@ApiOperation(value = "Find all tasks", notes = "Retrieves a list of all tasks", response = TaskResponse[].class)
 	public ResponseEntity<List<TaskResponse>> findAll() {

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +18,12 @@ import fi.dlaitine.springbootrestapp.repository.TaskRepository;
 @Service
 public class TaskService {
 	
-	@Autowired
 	private TaskRepository repository;
 	
+	public TaskService(TaskRepository repository) {
+		this.repository = repository;
+	}
+
 	public List<TaskResponse> findAll() {
 		return StreamSupport.stream(repository.findAll().spliterator(), false)
 				.map(task -> new TaskResponse(task.getId(), task.getName(), task.getDescription(), task.isDone(), task.getCreated()))

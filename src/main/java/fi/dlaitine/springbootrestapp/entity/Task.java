@@ -27,7 +27,7 @@ public class Task {
 		@Column
 		private LocalDateTime created;
 		
-		public Task() {
+		private Task() {
 			
 		}
 		
