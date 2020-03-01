@@ -1,31 +1,33 @@
 package fi.dlaitine.springbootrestapp.entity;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Task")
 public class Task {
 
 		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private long id;
 		
-		@Column(unique=true)
+		@Column(name = "name", unique=true)
 		private String name;
 		
-		@Column
+		@Column(name = "description")
 		private String description;
 		
-		@Column
+		@Column(name = "done")
 		private boolean done;
 		
-		@Column
-		private LocalDateTime created;
+		@Column(name = "created_at")
+		private long createdAt;
 		
 		private Task() {
 			
@@ -35,7 +37,7 @@ public class Task {
 			this.name = name;
 			this.description = description;
 			this.done = done;
-			this.created = LocalDateTime.now();
+			this.createdAt = Instant.now().getEpochSecond();
 		}
 
 		public String getName() {
@@ -66,7 +68,7 @@ public class Task {
 			return id;
 		}
 
-		public LocalDateTime getCreated() {
-			return created;
+		public long getCreatedAt() {
+			return createdAt;
 		}
 }

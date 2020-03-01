@@ -13,11 +13,6 @@ public class TaskRequest {
 	private String description;
 	private boolean done;
 
-	
-	private TaskRequest() {
-		
-	}
-	
 	public TaskRequest(String name, String description, boolean done) {
 		this.name = name;
 		this.description = description;

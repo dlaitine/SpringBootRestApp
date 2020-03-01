@@ -2,7 +2,7 @@ Simple REST API to manage tasks. Uses Spring Boot with H2 database to create, re
 
 Prerequisites:
 
-Java 8
+Java 11
 Maven
 
 Install dependencies
