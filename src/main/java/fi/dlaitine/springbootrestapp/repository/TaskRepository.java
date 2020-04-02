@@ -1,14 +1,16 @@
 package fi.dlaitine.springbootrestapp.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
-import fi.dlaitine.springbootrestapp.entity.Task;
+import fi.dlaitine.springbootrestapp.entity.TaskEntity;
 
 @Repository
-public interface TaskRepository extends CrudRepository<Task, Long> {
+@RepositoryRestResource(exported = false)
+public interface TaskRepository extends CrudRepository<TaskEntity, Long> {
 	
-	Task findByName(String name);
+	TaskEntity findByName(String name);
 	
 	boolean existsByName(String name);
 }

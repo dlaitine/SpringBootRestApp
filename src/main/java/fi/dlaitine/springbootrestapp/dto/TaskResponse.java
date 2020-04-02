@@ -1,4 +1,4 @@
-package fi.dlaitine.springbootrestapp.model;
+package fi.dlaitine.springbootrestapp.dto;
 
 public class TaskResponse {
 

@@ -17,8 +17,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import fi.dlaitine.springbootrestapp.Application;
-import fi.dlaitine.springbootrestapp.model.TaskRequest;
-import fi.dlaitine.springbootrestapp.model.TaskResponse;
+import fi.dlaitine.springbootrestapp.dto.TaskRequest;
+import fi.dlaitine.springbootrestapp.dto.TaskResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(

@@ -1,4 +1,4 @@
-package fi.dlaitine.springbootrestapp.model.exception;
+package fi.dlaitine.springbootrestapp.exception;
 
 public class TaskNotFoundException extends RuntimeException {
 

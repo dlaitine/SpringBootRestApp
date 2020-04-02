@@ -1,4 +1,4 @@
-package fi.dlaitine.springbootrestapp.model;
+package fi.dlaitine.springbootrestapp.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

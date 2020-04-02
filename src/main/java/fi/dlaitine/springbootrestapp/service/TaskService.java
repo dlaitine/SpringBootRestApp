@@ -8,11 +8,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fi.dlaitine.springbootrestapp.entity.Task;
-import fi.dlaitine.springbootrestapp.model.TaskRequest;
-import fi.dlaitine.springbootrestapp.model.TaskResponse;
-import fi.dlaitine.springbootrestapp.model.exception.TaskAlreadyExistsException;
-import fi.dlaitine.springbootrestapp.model.exception.TaskNotFoundException;
+import fi.dlaitine.springbootrestapp.dto.TaskRequest;
+import fi.dlaitine.springbootrestapp.dto.TaskResponse;
+import fi.dlaitine.springbootrestapp.entity.TaskEntity;
+import fi.dlaitine.springbootrestapp.exception.TaskAlreadyExistsException;
+import fi.dlaitine.springbootrestapp.exception.TaskNotFoundException;
 import fi.dlaitine.springbootrestapp.repository.TaskRepository;
 
 @Service
@@ -31,17 +31,17 @@ public class TaskService {
 	}
 	
 	public TaskResponse findByName(String name) {
-		Task task = findTask(name);
+		TaskEntity task = findTask(name);
 
 		return new TaskResponse(task.getId(), task.getName(), task.getDescription(), task.isDone(), task.getCreatedAt());
 	}
 	
 	@Transactional
 	public TaskResponse save(TaskRequest task) {
-		Task newTask = new Task(task.getName(), task.getDescription(), task.isDone());
+		TaskEntity newTask = new TaskEntity(task.getName(), task.getDescription(), task.isDone());
 		
 		try {
-			Task savedTask = repository.save(newTask);
+			TaskEntity savedTask = repository.save(newTask);
 			return new TaskResponse(savedTask.getId(), savedTask.getName(), savedTask.getDescription(), savedTask.isDone(), savedTask.getCreatedAt());
 		}
 		catch (DataIntegrityViolationException e) {
@@ -51,7 +51,7 @@ public class TaskService {
 	
 	@Transactional
 	public TaskResponse update(String name, TaskRequest newTask) {
-		Task task = findTask(name);
+		TaskEntity task = findTask(name);
 
 		if(!name.equals(newTask.getName()) && repository.existsByName(newTask.getName())) {
 			throw new TaskAlreadyExistsException(newTask.getName());
@@ -60,21 +60,19 @@ public class TaskService {
 		task.setName(newTask.getName());
 		task.setDescription(newTask.getDescription());
 		task.setDone(newTask.isDone());
+		TaskEntity updatedTask = repository.save(task);
 		
-		return new TaskResponse(task.getId(), task.getName(), task.getDescription(), task.isDone(), task.getCreatedAt());
+		return new TaskResponse(updatedTask.getId(), updatedTask.getName(), updatedTask.getDescription(), updatedTask.isDone(), updatedTask.getCreatedAt());
 	}
 	
 	@Transactional
 	public void delete(String name) {
-		Task task = findTask(name);
-		
-		if(task != null) {
-			repository.delete(task);
-		}
+		TaskEntity task = findTask(name);
+		repository.delete(task);
 	}
 	
-	private Task findTask(String name) {
-		Task task = repository.findByName(name);
+	private TaskEntity findTask(String name) {
+		TaskEntity task = repository.findByName(name);
 		
 		if(task == null) {
 			throw new TaskNotFoundException(name);

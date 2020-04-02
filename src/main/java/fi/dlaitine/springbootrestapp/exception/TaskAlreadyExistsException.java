@@ -1,4 +1,4 @@
-package fi.dlaitine.springbootrestapp.model.exception;
+package fi.dlaitine.springbootrestapp.exception;
 
 public class TaskAlreadyExistsException extends RuntimeException {
 
@@ -12,7 +12,7 @@ public class TaskAlreadyExistsException extends RuntimeException {
 	
 	@Override
 	public String getMessage() {
-		return "Task with name '" + name + "' already exists in database";
+		return "Task with name '" + name + "' already exists in the database";
 	}
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Task")
-public class Task {
+public class TaskEntity {
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +29,11 @@ public class Task {
 		@Column(name = "created_at")
 		private long createdAt;
 		
-		private Task() {
+		private TaskEntity() {
 			
 		}
 		
-		public Task(String name, String description, boolean done) {
+		public TaskEntity(String name, String description, boolean done) {
 			this.name = name;
 			this.description = description;
 			this.done = done;
