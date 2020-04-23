@@ -42,7 +42,7 @@ public class TaskController {
 		this.service = service;
 	}
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "")
 	@ApiOperation(value = "Find all tasks", notes = "Retrieves a list of all tasks", response = TaskResponse[].class)
 	public ResponseEntity<List<TaskResponse>> findAll() {
 		return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
@@ -57,7 +57,7 @@ public class TaskController {
 		return new ResponseEntity<>(service.findByName(name), HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/")
+	@PostMapping(value = "")
 	@ApiOperation(value = "Save new task", notes = "Saves a new task to database", response = TaskResponse.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_CONFLICT, message = "Task with the same name already exists"),
