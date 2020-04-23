@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import fi.dlaitine.springbootrestapp.dto.TaskRequest;
 import fi.dlaitine.springbootrestapp.dto.TaskResponse;
@@ -30,6 +33,8 @@ import io.swagger.annotations.ApiResponse;
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
 
 	private TaskService service;
 
@@ -55,7 +60,8 @@ public class TaskController {
 	@PostMapping(value = "/")
 	@ApiOperation(value = "Save new task", notes = "Saves a new task to database", response = TaskResponse.class)
 	@ApiResponses(value = {
-			@ApiResponse(code = HttpServletResponse.SC_CONFLICT, message = "Task with the same name already exists")
+			@ApiResponse(code = HttpServletResponse.SC_CONFLICT, message = "Task with the same name already exists"),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Invalid name length (must be between 4 and 64 characters)")
 	})
 	public ResponseEntity<TaskResponse> save(@Valid @RequestBody TaskRequest task) {
 		return new ResponseEntity<>(service.save(task), HttpStatus.OK);
@@ -82,21 +88,25 @@ public class TaskController {
 
 	@ExceptionHandler(TaskAlreadyExistsException.class)
 	public ResponseEntity<String> handleException(TaskAlreadyExistsException e) {
+		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(TaskNotFoundException.class)
 	public ResponseEntity<String> handleException(TaskNotFoundException e) {
+		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<Void> handleException(MethodArgumentNotValidException e) {
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> handleException(MethodArgumentNotValidException e) {
+		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Void> handleException(Exception e) {
+		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
 		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
