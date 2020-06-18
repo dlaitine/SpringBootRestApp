@@ -52,7 +52,7 @@ public class SpringBootRestAppIntegrationIT {
 		assertEquals("Create integration test for POST", taskResponse.getDescription());
 		assertEquals(false, taskResponse.isDone());
 	}
-	
+
 	@Test
 	public void postDuplicateTaskTest() {
 		
