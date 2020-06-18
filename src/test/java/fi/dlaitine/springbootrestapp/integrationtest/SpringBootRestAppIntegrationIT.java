@@ -1,6 +1,7 @@
 package fi.dlaitine.springbootrestapp.integrationtest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import fi.dlaitine.springbootrestapp.Application;
 import fi.dlaitine.springbootrestapp.dto.TaskRequest;
@@ -43,15 +45,30 @@ public class SpringBootRestAppIntegrationIT {
 	@Test
 	public void postTaskTest() {
 		
-		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test GET", "Create integration test for GET", false), TaskResponse.class);
+		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test POST", "Create integration test for POST", false), TaskResponse.class);
 		TaskResponse taskResponse = taskEntity.getBody();
 		
 		assertEquals(HttpStatus.OK, taskEntity.getStatusCode());
-		assertEquals("Test GET", taskResponse.getName());
-		assertEquals("Create integration test for GET", taskResponse.getDescription());
+		assertEquals("Test POST", taskResponse.getName());
+		assertEquals("Create integration test for POST", taskResponse.getDescription());
 		assertEquals(false, taskResponse.isDone());
 	}
 	
+	@Test
+	public void postDuplicateTaskTest() {
+
+		restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test duplicate POST", "Create integration test for duplicate POST", false), TaskResponse.class);
+
+		ResponseEntity<TaskResponse> taskEntity = null;
+
+		try {
+			taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test POST", "Create integration test for duplicate POST", false), TaskResponse.class);
+		} catch (HttpStatusCodeException e) {
+			assertNull(taskEntity);
+			assertEquals(HttpStatus.CONFLICT, e.getStatusCode());
+		}
+	}
+
 	@Test
 	public void deleteTaskTest() {
 		restTemplate.delete(TASKS_URL + "Add integration tests");
@@ -81,18 +98,24 @@ public class SpringBootRestAppIntegrationIT {
 
 	@Test
 	public void postTaskWithTooShortNameTest() {
-		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity(TASKS_URL, new TaskRequest("S", "Test too short name", false), TaskResponse.class);
-		HttpStatus status = taskResponse.getStatusCode();
-		assertEquals(HttpStatus.BAD_REQUEST, status);
+
+		try {
+			restTemplate.postForEntity(TASKS_URL, new TaskRequest("S", "Test too short name", false), String.class);
+		} catch (HttpStatusCodeException e) {
+			assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
+		}
 	}
 
 	@Test
 	public void postTaskWithTooLongNameTest() {
-		ResponseEntity<TaskResponse> taskResponse = restTemplate.postForEntity(TASKS_URL, new TaskRequest(
-				"LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
-				"Test too long name",
-				false), TaskResponse.class);
-		HttpStatus status = taskResponse.getStatusCode();
-		assertEquals(HttpStatus.BAD_REQUEST, status);
+
+		try {
+			restTemplate.postForEntity(TASKS_URL, new TaskRequest(
+					"LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
+					"Test too long name",
+					false), String.class);
+		} catch (HttpStatusCodeException e) {
+			assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
+		}
 	}
 }
