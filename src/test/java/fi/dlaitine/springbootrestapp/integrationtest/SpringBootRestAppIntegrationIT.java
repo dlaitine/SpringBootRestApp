@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import fi.dlaitine.springbootrestapp.Application;
 import fi.dlaitine.springbootrestapp.dto.TaskRequest;
@@ -56,17 +55,14 @@ public class SpringBootRestAppIntegrationIT {
 	
 	@Test
 	public void postDuplicateTaskTest() {
+		
+		TaskRequest request = new TaskRequest("Test duplicate POST", "Create integration test for duplicate POST", false);
 
-		restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test duplicate POST", "Create integration test for duplicate POST", false), TaskResponse.class);
+		restTemplate.postForEntity(TASKS_URL, request, TaskResponse.class);
 
-		ResponseEntity<TaskResponse> taskEntity = null;
-
-		try {
-			taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest("Test POST", "Create integration test for duplicate POST", false), TaskResponse.class);
-		} catch (HttpStatusCodeException e) {
-			assertNull(taskEntity);
-			assertEquals(HttpStatus.CONFLICT, e.getStatusCode());
-		}
+		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity(TASKS_URL, request, TaskResponse.class);
+		assertNull(taskEntity.getBody());
+		assertEquals(HttpStatus.CONFLICT, taskEntity.getStatusCode());
 	}
 
 	@Test
@@ -98,24 +94,18 @@ public class SpringBootRestAppIntegrationIT {
 
 	@Test
 	public void postTaskWithTooShortNameTest() {
-
-		try {
-			restTemplate.postForEntity(TASKS_URL, new TaskRequest("S", "Test too short name", false), String.class);
-		} catch (HttpStatusCodeException e) {
-			assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
-		}
+		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest("S", "Test too short name", false), TaskResponse.class);
+		assertNull(taskEntity.getBody());
+		assertEquals(HttpStatus.BAD_REQUEST, taskEntity.getStatusCode());
 	}
 
 	@Test
 	public void postTaskWithTooLongNameTest() {
-
-		try {
-			restTemplate.postForEntity(TASKS_URL, new TaskRequest(
+		ResponseEntity<TaskResponse> taskEntity = restTemplate.postForEntity(TASKS_URL, new TaskRequest(
 					"LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",
 					"Test too long name",
-					false), String.class);
-		} catch (HttpStatusCodeException e) {
-			assertEquals(HttpStatus.BAD_REQUEST, e.getStatusCode());
-		}
+					false), TaskResponse.class);
+		assertNull(taskEntity.getBody());
+		assertEquals(HttpStatus.BAD_REQUEST, taskEntity.getStatusCode());
 	}
 }

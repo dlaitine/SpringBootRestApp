@@ -86,21 +86,21 @@ public class TaskController {
 	}
 
 	@ExceptionHandler(TaskAlreadyExistsException.class)
-	public ResponseEntity<String> handleException(TaskAlreadyExistsException e) {
+	public ResponseEntity<Void> handleException(TaskAlreadyExistsException e) {
 		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		return new ResponseEntity<>(HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(TaskNotFoundException.class)
-	public ResponseEntity<String> handleException(TaskNotFoundException e) {
+	public ResponseEntity<Void> handleException(TaskNotFoundException e) {
 		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<String> handleException(MethodArgumentNotValidException e) {
+	public ResponseEntity<Void> handleException(MethodArgumentNotValidException e) {
 		LOGGER.error("Task API processing failed with exception: {}", e.getMessage());
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(Exception.class)
